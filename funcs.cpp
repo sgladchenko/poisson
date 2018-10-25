@@ -6,14 +6,17 @@
 // boundary and initial values for mesh of solution
 
 double g(double x, double y) {
-	return 0;
+	return 0.0;
 }
 
  // the function in RHS
 
 double f(double x, double y) {
-	if ((x-0.5)*(x-0.5) + (y-0.5)*(y-0.5) < 0.2*0.2) {
-		return -0.5;
+	if ((x-0.25)*(x-0.25) + (y-0.25)*(y-0.25) < 0.07*0.07) {
+		return +1000.0;
+	}
+	else if ((x-0.75)*(x-0.75) + (y-0.75)*(y-0.75) < 0.07*0.07) {
+		return -1000.0;
 	}
 	else {
 		return 0;
@@ -24,7 +27,6 @@ void output_mesh(double** mesh, int n, double elapsed)
 {
 	std::ofstream f(OUTPUT_FILE);
 
-	f << n << std::endl;
 	for (int i = 0; i < n; ++i) {
 		for (int j = 0; j < n; ++j) {
 			f << mesh[i][j] << " ";
@@ -47,6 +49,7 @@ void calculate_parallel(int n, int num_t)
 
 	double** mesh = new double*[n];
 	double** f_m  = new double*[n];
+	double     h  = 1.0/(n - 1);
 
 	// make meshes
 
@@ -135,7 +138,7 @@ void calculate_parallel(int n, int num_t)
 
 			for (int i = 1; i <= chunck_size - 2; ++i) {
 				for (int j = 1; j <= n - 2; ++j) {
-					tchunck[i][j] = 0.25*(tchunck_prev[i+1][j] + tchunck_prev[i][j+1] + tchunck_prev[i-1][j] + tchunck_prev[i][j-1] - f_m[i_start + i -1][j]);
+					tchunck[i][j] = 0.25*(tchunck_prev[i+1][j] + tchunck_prev[i][j+1] + tchunck_prev[i-1][j] + tchunck_prev[i][j-1] - h*h*f_m[i_start + i -1][j]);
 				}
 			}
 

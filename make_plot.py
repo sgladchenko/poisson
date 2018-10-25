@@ -16,12 +16,12 @@ f = open("out.txt")
 for line in f.readlines():
 	lines.append(line)
 
-X = numpy.linspace(0, 1, num=len(lines))
-Y = numpy.linspace(0, 1, num=len(lines))
+X = numpy.linspace(0.0, 1.0, num=len(lines))
+Y = numpy.linspace(0.0, 1.0, num=len(lines))
 
 X, Y = numpy.meshgrid(X, Y)
 
-Z = numpy.array([[0 for i in range(len(lines))] for j in range(len(lines))])
+Z = numpy.array([[0.0 for i in range(len(lines))] for j in range(len(lines))])
 
 for i in range(len(lines)):
 	line = lines[i]
